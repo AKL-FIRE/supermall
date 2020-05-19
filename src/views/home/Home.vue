@@ -7,6 +7,7 @@
     </nav-bar>
     <my-swiper :banners="banners"></my-swiper>
     <recommend-view :recommends="recommends"></recommend-view>
+    <feature-view></feature-view>
   </div>
 </template>
 
@@ -16,13 +17,15 @@
   import MySwiper from "./childComps/MySwiper";
   import {getHomeMultidata} from "../../network/home";
   import RecommendView from "./childComps/RecommendView";
+  import FeatureView from "./childComps/FeatureView";
 
   export default {
     name: "Home",
     components: {
       NavBar,
       MySwiper,
-      RecommendView
+      RecommendView,
+      FeatureView
     },
     data() {
       return {
@@ -41,9 +44,18 @@
 </script>
 
 <style scoped>
+  #home {
+    padding-top: 44px;
+    padding-bottom: 49px;
+  }
   .home-nav {
     background-color: var(--color-tint);
     color: #fff;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: 9;
   }
 
 </style>

@@ -16,7 +16,7 @@
   export default {
     name: "MySwiper",
     props: {
-      banners: Object
+      banners: Array
     },
     components: {
       Swiper,
