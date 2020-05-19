@@ -8,24 +8,91 @@
     <my-swiper :banners="banners"></my-swiper>
     <recommend-view :recommends="recommends"></recommend-view>
     <feature-view></feature-view>
+    <tab-control :titles="['流行', '新款', '精选']" class="tab-control"></tab-control>
+    <ul>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+      <li>adasd</li>
+    </ul>
   </div>
 </template>
 
 <script>
 
-  import NavBar from "../../components/common/navbar/NavBar";
   import MySwiper from "./childComps/MySwiper";
-  import {getHomeMultidata} from "../../network/home";
   import RecommendView from "./childComps/RecommendView";
   import FeatureView from "./childComps/FeatureView";
+
+  import NavBar from "../../components/common/navbar/NavBar";
+  import TabControl from "../../components/content/tabControl/TabControl";
+
+  import {getHomeMultidata} from "../../network/home";
 
   export default {
     name: "Home",
     components: {
-      NavBar,
       MySwiper,
       RecommendView,
-      FeatureView
+      FeatureView,
+      NavBar,
+      TabControl
     },
     data() {
       return {
@@ -57,5 +124,8 @@
     top: 0;
     z-index: 9;
   }
-
+  .tab-control {
+    position: sticky;
+    top: 44px;
+  }
 </style>
