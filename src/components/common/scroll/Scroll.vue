@@ -14,15 +14,28 @@
 
   export default {
     name: "Scroll",
+    props: {
+      probeType: {
+        type: Number,
+        default: 0
+      }
+    },
     data() {
       return {
         scroll: null
       }
     },
     mounted() {
+      // 1. 创建BScroll对象
       this.scroll = new BScroll(this.$refs.wrapper, {
-        click: true
+        click: true,
+        probeType: this.probeType
       });
+
+      // 2.监听滚动的位置
+      this.scroll.on('scroll', position => {
+        this.$emit('scrolling', position)
+      })
     },
     methods: {
       scrollTo(x, y, time=300) {
