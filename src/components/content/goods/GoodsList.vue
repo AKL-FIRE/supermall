@@ -1,5 +1,5 @@
 <template>
-  <div class="goods clear-fix">
+  <div class="goods">
     <goods-list-item v-for="item in goods"
                      :goods-item="item"
                      :key="item.iid">
@@ -29,11 +29,11 @@
 
 <style scoped>
   /*flex方法布局*/
-  /*.goods {*/
-  /*  display: flex;*/
-  /*  flex-wrap: wrap;*/
-  /*  justify-content: space-around;*/
+  .goods {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
 
-  /*  padding: 2px;*/
-  /*}*/
+    padding: 2px;
+  }
 </style>

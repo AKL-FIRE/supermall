@@ -5,7 +5,7 @@
         <h2>购物街</h2>
       </template>
     </nav-bar>
-    <scroll class="content" ref="content">
+    <scroll class="content" ref="scroll">
       <my-swiper :banners="banners"></my-swiper>
       <recommend-view :recommends="recommends"></recommend-view>
       <feature-view></feature-view>
@@ -14,7 +14,8 @@
                    @tab-click="tabClick"></tab-control>
       <goods-list :goods="showGoods"></goods-list>
     </scroll>
-
+    <!-- 在我们需要监听一个组件的原生事件时，必须给对应的事件加上.native修饰符，才能监听 -->
+    <back-top @click.native="backClick"></back-top>
   </div>
 </template>
 
@@ -28,6 +29,7 @@
   import TabControl from "../../components/content/tabControl/TabControl";
   import GoodsList from "../../components/content/goods/GoodsList";
   import Scroll from "../../components/common/scroll/Scroll";
+  import BackTop from "../../components/content/backTop/BackTop";
 
   import {getHomeMultidata, getHomeGoods} from "../../network/home";
 
@@ -40,7 +42,8 @@
       NavBar,
       TabControl,
       GoodsList,
-      Scroll
+      Scroll,
+      BackTop
     },
     data() {
       return {
@@ -67,9 +70,6 @@
       this.getHomeGoods('new');
       this.getHomeGoods('sell');
     },
-    mounted() {
-      this.$refs.content.height = window.screen.height - 93 + 'px';
-    },
     methods: {
       /*
       * 事件监听相关事件
@@ -86,6 +86,9 @@
             this.currentType = 'sell';
             break;
         }
+      },
+      backClick() {
+        this.$refs.scroll.scrollTo(0, 0, 500);
       },
       /*
       * 网络请求相关
