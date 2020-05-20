@@ -5,76 +5,16 @@
         <h2>购物街</h2>
       </template>
     </nav-bar>
-    <my-swiper :banners="banners"></my-swiper>
-    <recommend-view :recommends="recommends"></recommend-view>
-    <feature-view></feature-view>
-    <tab-control :titles="['流行', '新款', '精选']"
-                 class="tab-control"
-                 @tab-click="tabClick"></tab-control>
-    <goods-list :goods="showGoods"></goods-list>
+    <scroll class="content" ref="content">
+      <my-swiper :banners="banners"></my-swiper>
+      <recommend-view :recommends="recommends"></recommend-view>
+      <feature-view></feature-view>
+      <tab-control :titles="['流行', '新款', '精选']"
+                   class="tab-control"
+                   @tab-click="tabClick"></tab-control>
+      <goods-list :goods="showGoods"></goods-list>
+    </scroll>
 
-    <ul>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-      <li>adasd</li>
-    </ul>
   </div>
 </template>
 
@@ -87,6 +27,7 @@
   import NavBar from "../../components/common/navbar/NavBar";
   import TabControl from "../../components/content/tabControl/TabControl";
   import GoodsList from "../../components/content/goods/GoodsList";
+  import Scroll from "../../components/common/scroll/Scroll";
 
   import {getHomeMultidata, getHomeGoods} from "../../network/home";
 
@@ -98,7 +39,8 @@
       FeatureView,
       NavBar,
       TabControl,
-      GoodsList
+      GoodsList,
+      Scroll
     },
     data() {
       return {
@@ -124,6 +66,9 @@
       this.getHomeGoods('pop');
       this.getHomeGoods('new');
       this.getHomeGoods('sell');
+    },
+    mounted() {
+      this.$refs.content.height = window.screen.height - 93 + 'px';
     },
     methods: {
       /*
@@ -167,8 +112,10 @@
 
 <style scoped>
   #home {
+    height: 100vh;
     padding-top: 44px;
     padding-bottom: 49px;
+    position: relative;
   }
   .home-nav {
     background-color: var(--color-tint);
@@ -183,4 +130,17 @@
     position: sticky;
     top: 44px;
   }
+  .content {
+    /*height: 300px;*/
+    overflow: hidden;
+    position: absolute;
+    top: 44px;
+    bottom: 49px;
+    left: 0;
+    right: 0;
+  }
+  /*.content {*/
+  /*  height: 300px;*/
+  /*  overflow: hidden;*/
+  /*}*/
 </style>
