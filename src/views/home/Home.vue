@@ -10,12 +10,11 @@
             :probe-type="3"
             @scrolling="contentScroll"
             :pull-up-load="true"
-            >
+            @pulling-up="loadMore">
       <my-swiper :banners="banners"></my-swiper>
       <recommend-view :recommends="recommends"></recommend-view>
       <feature-view></feature-view>
       <tab-control :titles="['流行', '新款', '精选']"
-                   class="tab-control"
                    @tab-click="tabClick"></tab-control>
       <goods-list :goods="showGoods"></goods-list>
     </scroll>
@@ -108,6 +107,9 @@
       contentScroll(pos) {
         this.isShowBackTop = -pos.y > 1000;
       },
+      loadMore() {
+        this.getHomeGoods(this.currentType);
+      },
       /*
       * 网络请求相关
       * */
@@ -125,7 +127,8 @@
           // this.goods[type].list = res.data.list;
           this.goods[type].list.push(...res.data.list);
           this.goods[type].page++;
-
+          // 完成上拉加载更多
+          this.$refs.scroll.finishPullingUp();
         })
       }
     }
@@ -148,10 +151,6 @@
     top: 0;
     z-index: 9;
   }
-  .tab-control {
-    position: sticky;
-    top: 44px;
-  }
   .content {
     /*height: 300px;*/
     overflow: hidden;
@@ -161,8 +160,4 @@
     left: 0;
     right: 0;
   }
-  /*.content {*/
-  /*  height: 300px;*/
-  /*  overflow: hidden;*/
-  /*}*/
 </style>

@@ -38,16 +38,25 @@
       });
 
       // 2.监听滚动的位置
-      this.scroll.on('scroll', position => {
-        this.$emit('scrolling', position)
-      })
+      if(this.probeType === 2 || this.probeType === 3) {
+        this.scroll.on('scroll', position => {
+          this.$emit('scrolling', position)
+        })
+      }
+
+      // 3.监听滚到底部
+      if(this.pullUpLoad) {
+        this.scroll.on('pullingUp', () => {
+          this.$emit('pulling-up');
+        })
+      }
     },
     methods: {
       scrollTo(x, y, time=300) {
         this.scroll && this.scroll.scrollTo(x, y, time);
       },
       finishPullingUp() {
-        this.scroll.finishPullUp();
+        this.scroll && this.scroll.finishPullUp();
       },
       refresh() {
         this.scroll && this.scroll.refresh();
