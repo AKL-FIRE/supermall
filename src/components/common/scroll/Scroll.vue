@@ -41,11 +41,6 @@
       this.scroll.on('scroll', position => {
         this.$emit('scrolling', position)
       })
-
-      // 3.监听上拉事件
-      this.scroll.on('pullingUp', () => {
-        this.$emit('pulling-up');
-      })
     },
     methods: {
       scrollTo(x, y, time=300) {
@@ -53,6 +48,9 @@
       },
       finishPullingUp() {
         this.scroll.finishPullUp();
+      },
+      refresh() {
+        this.scroll.refresh();
       }
     }
   }

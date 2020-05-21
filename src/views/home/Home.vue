@@ -10,7 +10,7 @@
             :probe-type="3"
             @scrolling="contentScroll"
             :pull-up-load="true"
-            @pulling-up="loadMore">
+            >
       <my-swiper :banners="banners"></my-swiper>
       <recommend-view :recommends="recommends"></recommend-view>
       <feature-view></feature-view>
@@ -75,6 +75,10 @@
       this.getHomeGoods('pop');
       this.getHomeGoods('new');
       this.getHomeGoods('sell');
+      // 3.监听item中图片加载完成
+      this.$bus.$on('itemImageLoad', () => {
+        this.$refs.scroll.refresh();
+      })
     },
     methods: {
       /*
@@ -120,7 +124,6 @@
           this.goods[type].list.push(...res.data.list);
           this.goods[type].page++;
 
-          this.$refs.scroll.finishPullingUp();
         })
       }
     }
