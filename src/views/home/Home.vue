@@ -5,7 +5,12 @@
         <h2>购物街</h2>
       </template>
     </nav-bar>
-    <scroll class="content" ref="scroll" :probe-type="3" @scrolling="contentScroll">
+    <scroll class="content"
+            ref="scroll"
+            :probe-type="3"
+            @scrolling="contentScroll"
+            :pull-up-load="true"
+            @pulling-up="loadMore">
       <my-swiper :banners="banners"></my-swiper>
       <recommend-view :recommends="recommends"></recommend-view>
       <feature-view></feature-view>
@@ -94,6 +99,9 @@
       contentScroll(pos) {
         this.isShowBackTop = -pos.y > 1000;
       },
+      loadMore() {
+        this.getHomeGoods(this.currentType);
+      },
       /*
       * 网络请求相关
       * */
@@ -111,6 +119,8 @@
           // this.goods[type].list = res.data.list;
           this.goods[type].list.push(...res.data.list);
           this.goods[type].page++;
+
+          this.$refs.scroll.finishPullingUp();
         })
       }
     }
