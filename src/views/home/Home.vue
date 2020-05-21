@@ -37,6 +37,7 @@
   import BackTop from "../../components/content/backTop/BackTop";
 
   import {getHomeMultidata, getHomeGoods} from "../../network/home";
+  import {debounce} from "../../common/utils/utils";
 
   export default {
     name: "Home",
@@ -75,10 +76,14 @@
       this.getHomeGoods('pop');
       this.getHomeGoods('new');
       this.getHomeGoods('sell');
+
+    },
+    mounted() {
       // 3.监听item中图片加载完成
+      const refresh = debounce(this.$refs.scroll.refresh, 500);
       this.$bus.$on('itemImageLoad', () => {
-        this.$refs.scroll.refresh();
-      })
+        refresh();
+      });
     },
     methods: {
       /*
@@ -102,9 +107,6 @@
       },
       contentScroll(pos) {
         this.isShowBackTop = -pos.y > 1000;
-      },
-      loadMore() {
-        this.getHomeGoods(this.currentType);
       },
       /*
       * 网络请求相关
