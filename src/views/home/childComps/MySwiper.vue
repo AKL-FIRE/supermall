@@ -2,7 +2,7 @@
   <swiper ref="mySwiper" :options="swiperOptions" class="my-swiper">
     <swiper-slide v-for="(item, index) in banners" :key="index">
       <a :href="item.link">
-        <img :src="item.image" :alt="item.title">
+        <img :src="item.image" :alt="item.title" @load="imageLoad">
       </a>
     </swiper-slide>
     <div class="swiper-pagination" slot="pagination"></div>
@@ -40,7 +40,8 @@
             stopOnLastSlide: false,
             disableOnInteraction: false
           }
-        }
+        },
+        isImageLoadEmit: false
       }
     },
     computed: {
@@ -51,6 +52,14 @@
     mounted() {
       // console.log('Current Swiper instance object', this.swiper)
       this.swiper.slideTo(3, 1000, false)
+    },
+    methods: {
+      imageLoad() {
+        if(!this.isImageLoadEmit) {
+          this.$emit('swiper-image-load');
+          this.isImageLoadEmit = true;
+        }
+      }
     }
   }
 </script>

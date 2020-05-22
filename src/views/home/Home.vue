@@ -5,17 +5,22 @@
         <h2>购物街</h2>
       </template>
     </nav-bar>
+    <tab-control :titles="['流行', '新款', '精选']"
+                 @tab-click="tabClick"
+                 ref="tabControl1"
+                 class="tab-control" v-show="isTabFixed"></tab-control>
     <scroll class="content"
             ref="scroll"
             :probe-type="3"
             @scrolling="contentScroll"
             :pull-up-load="true"
             @pulling-up="loadMore">
-      <my-swiper :banners="banners"></my-swiper>
+      <my-swiper :banners="banners" @swiper-image-load="swiperImageLoad"></my-swiper>
       <recommend-view :recommends="recommends"></recommend-view>
       <feature-view></feature-view>
       <tab-control :titles="['流行', '新款', '精选']"
-                   @tab-click="tabClick"></tab-control>
+                   @tab-click="tabClick"
+                   ref="tabControl2"></tab-control>
       <goods-list :goods="showGoods"></goods-list>
     </scroll>
     <!-- 在我们需要监听一个组件的原生事件时，必须给对应的事件加上.native修饰符，才能监听 -->
@@ -60,7 +65,9 @@
           'sell' : {page: 0, list: []},
         },
         currentType: 'pop',
-        isShowBackTop: false
+        isShowBackTop: false,
+        tabOffsetTop: 0,
+        isTabFixed: false
       }
     },
     computed: {
@@ -83,6 +90,7 @@
       this.$bus.$on('itemImageLoad', () => {
         refresh();
       });
+
     },
     methods: {
       /*
@@ -100,15 +108,25 @@
             this.currentType = 'sell';
             break;
         }
+        this.$refs.tabControl1.currentIndex = index;
+        this.$refs.tabControl2.currentIndex = index;
       },
       backClick() {
         this.$refs.scroll.scrollTo(0, 0, 500);
       },
       contentScroll(pos) {
+        // 1.判断BackTop是否显示
         this.isShowBackTop = -pos.y > 1000;
+        // 2. 决定tabControl是否吸顶(position: fixed)
+        this.isTabFixed = -pos.y > this.tabOffsetTop;
       },
       loadMore() {
         this.getHomeGoods(this.currentType);
+      },
+      swiperImageLoad() {
+        // 获取tabControl的offsetTop
+        // 所有的组件都有一个属性$el,用来获取组件中的元素
+        this.tabOffsetTop = this.$refs.tabControl2.$el.offsetTop;
       },
       /*
       * 网络请求相关
@@ -138,18 +156,18 @@
 <style scoped>
   #home {
     height: 100vh;
-    padding-top: 44px;
-    padding-bottom: 49px;
+    /*padding-top: 44px;*/
+    /*padding-bottom: 49px;*/
     position: relative;
   }
   .home-nav {
     background-color: var(--color-tint);
     color: #fff;
-    position: fixed;
-    left: 0;
-    right: 0;
-    top: 0;
-    z-index: 9;
+    /*position: fixed;*/
+    /*left: 0;*/
+    /*right: 0;*/
+    /*top: 0;*/
+    /*z-index: 9;*/
   }
   .content {
     /*height: 300px;*/
@@ -159,5 +177,9 @@
     bottom: 49px;
     left: 0;
     right: 0;
+  }
+  .tab-control {
+    position: relative;
+    z-index: 9;
   }
 </style>
