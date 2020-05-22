@@ -9,7 +9,7 @@ export function getDetail(iid) {
   })
 }
 
-export class GoodsInfo {
+export class Goods {
   constructor(itemInfo, columns, services) {
     this.title = itemInfo.title;
     this.desc = itemInfo.desc;
