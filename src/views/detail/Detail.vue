@@ -12,7 +12,7 @@
   import DetailSwiper from "./childComps/DetailSwiper";
   import DetailBaseInfo from "./childComps/DetailBaseInfo";
 
-  import {getDetail, Goods} from "../../network/detail";
+  import {getDetail, Goods, Shop} from "../../network/detail";
 
   export default {
     name: "Detail",
@@ -25,7 +25,8 @@
       return {
         iid: "",
         detailTopImages: [],
-        goods: {}
+        goods: {},
+        shop: {}
       }
     },
     created() {
@@ -38,6 +39,8 @@
         this.detailTopImages = data.itemInfo.topImages;
         // 2.获取商品信息
         this.goods = new Goods(data.itemInfo, data.columns, data.shopInfo.services);
+        // 3.创建店铺信息
+        this.shop = new Shop(data.shopInfo);
       })
     }
   }
