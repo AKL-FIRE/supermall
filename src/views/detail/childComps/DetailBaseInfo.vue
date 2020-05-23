@@ -90,6 +90,7 @@
     padding-top: 12px;
     padding-bottom: 12px;
     border-bottom: 3px solid rgba(0, 0, 0, .1);
+    white-space: nowrap;
   }
   .info-service span {
     flex: 1;

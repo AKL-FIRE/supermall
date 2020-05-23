@@ -8,7 +8,7 @@
       <div class="shop-middle-item shop-middle-left">
         <div class="info-sells">
           <div class="sells-count">
-            {{shop.sells}}
+            {{shop.sells | formatText}}
           </div>
           <div class="sells-text">总销量</div>
         </div>
@@ -52,7 +52,12 @@
       return {
 
       }
-    }
+    },
+   filters: {
+      formatText(text) {
+        return (parseInt(text) / 10000).toFixed(1) + '万';
+      }
+   }
   }
 </script>
 

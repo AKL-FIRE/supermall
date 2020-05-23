@@ -37,6 +37,7 @@
   .param-info {
     padding: 15px;
     border-top: 3px solid #ccc;
+    font-size: 14px;
   }
   .info-size {
     width: 100%;

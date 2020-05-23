@@ -7,6 +7,7 @@
       <detail-shop-info :shop="shop"></detail-shop-info>
       <detail-goods-info :detail-info="detailInfo" @image-load="imageLoad"></detail-goods-info>
       <detail-param-info :param-info="paramInfo"></detail-param-info>
+      <detail-comment-info :comment-info="commentInfo"></detail-comment-info>
     </scroll>
   </div>
 </template>
@@ -19,6 +20,7 @@
   import DetailShopInfo from "./childComps/DetailShopInfo";
   import DetailGoodsInfo from "./childComps/DetailGoodsInfo";
   import DetailParamInfo from "./childComps/DetailParamInfo";
+  import DetailCommentInfo from "./childComps/DetailCommentInfo";
 
   import Scroll from "../../components/common/scroll/Scroll";
 
@@ -33,7 +35,8 @@
       DetailShopInfo,
       Scroll,
       DetailGoodsInfo,
-      DetailParamInfo
+      DetailParamInfo,
+      DetailCommentInfo
     },
     data() {
       return {
@@ -42,7 +45,8 @@
         goods: {},
         shop: {},
         detailInfo: {},
-        paramInfo: {}
+        paramInfo: {},
+        commentInfo: {}
       }
     },
     created() {
@@ -50,6 +54,7 @@
       this.iid = this.$route.params.iid;
       // 2.获取数据
       getDetail(this.iid).then(res => {
+        console.log(res);
         // 1.获取顶部轮播数据
         const data = res.result;
         this.detailTopImages = data.itemInfo.topImages;
@@ -61,6 +66,10 @@
         this.detailInfo = data.detailInfo;
         // 5.获取参数信息
         this.paramInfo = new GoodsParam(data.itemParams.info, data.itemParams.rule);
+        // 6.获取评论信息
+        if(data.rate.cRate !== 0) {
+          this.commentInfo = data.rate.list[0];
+        }
       })
     },
     methods: {
