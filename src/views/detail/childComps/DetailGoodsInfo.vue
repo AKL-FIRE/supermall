@@ -43,7 +43,7 @@
     watch: {
       // 监听属性detailInfo的变化，发生变化就执行该函数
       detailInfo() {
-        this.imagesLength = this.detailInfo.datailImage[0].list.length;
+        this.imagesLength = this.detailInfo.detailImage[0].list.length;
       }
     }
   }
