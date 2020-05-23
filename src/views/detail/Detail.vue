@@ -8,6 +8,7 @@
       <detail-goods-info :detail-info="detailInfo" @image-load="imageLoad"></detail-goods-info>
       <detail-param-info :param-info="paramInfo"></detail-param-info>
       <detail-comment-info :comment-info="commentInfo"></detail-comment-info>
+      <goods-list :goods="recommends"></goods-list>
     </scroll>
   </div>
 </template>
@@ -23,8 +24,11 @@
   import DetailCommentInfo from "./childComps/DetailCommentInfo";
 
   import Scroll from "../../components/common/scroll/Scroll";
+  import GoodsList from "../../components/content/goods/GoodsList";
 
-  import {getDetail, Goods, Shop, GoodsParam} from "../../network/detail";
+  import {getDetail, getRecommend, Goods, Shop, GoodsParam} from "../../network/detail";
+  import {debounce} from "../../common/utils/utils";
+  import {itemListenerMixin} from "../../common/mixin/mixin";
 
   export default {
     name: "Detail",
@@ -36,8 +40,10 @@
       Scroll,
       DetailGoodsInfo,
       DetailParamInfo,
-      DetailCommentInfo
+      DetailCommentInfo,
+      GoodsList
     },
+    mixins: [itemListenerMixin],
     data() {
       return {
         iid: "",
@@ -46,15 +52,15 @@
         shop: {},
         detailInfo: {},
         paramInfo: {},
-        commentInfo: {}
+        commentInfo: {},
+        recommends: [],
       }
     },
     created() {
       // 1.保存传入的iid
       this.iid = this.$route.params.iid;
-      // 2.获取数据
+      // 2.获取详情页数据
       getDetail(this.iid).then(res => {
-        console.log(res);
         // 1.获取顶部轮播数据
         const data = res.result;
         this.detailTopImages = data.itemInfo.topImages;
@@ -70,13 +76,24 @@
         if(data.rate.cRate !== 0) {
           this.commentInfo = data.rate.list[0];
         }
+      });
+      // 3.请求推荐数据
+      getRecommend().then(res => {
+        this.recommends = res.data.list;
       })
     },
     methods: {
       imageLoad() {
         this.$refs.scroll.refresh();
       }
+    },
+    mounted() {
+
+    },
+    destroyed() {
+      this.$bus.$off('itemImageLoad', this.itemImageListener);
     }
+
   }
 </script>
 

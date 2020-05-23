@@ -1,6 +1,6 @@
 <template>
   <div class="goods-item" @click="itemClick">
-    <img :src="goodsItem.show.img" alt="" @load="imageLoad">
+    <img :src="showImage" alt="" @load="imageLoad">
     <div class="goods-info">
       <p>{{goodsItem.title}}</p>
       <span class="price">{{goodsItem.price}}</span>
@@ -20,10 +20,20 @@
         }
       }
     },
+    computed: {
+      showImage() {
+        return this.goodsItem.image || this.goodsItem.show.img;
+      }
+    },
     methods: {
       imageLoad() {
         // 事件总线
         this.$bus.$emit('itemImageLoad');
+        // if(this.$route.path.indexOf('/home')) {
+        //   this.$bus.$emit('home-item-image-load');
+        // } else if (this.$route.path.indexOf('/detail')) {
+        //   this.$bus.$emit('detail-item-image-load')
+        // }
       },
       itemClick() {
         this.$router.push('/detail/' + this.goodsItem.iid);
