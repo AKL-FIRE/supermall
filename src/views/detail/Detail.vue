@@ -1,14 +1,14 @@
 <template>
   <div id="detail">
-    <detail-nav-bar class="detail-nav"></detail-nav-bar>
+    <detail-nav-bar class="detail-nav" @title-click="titleClick"></detail-nav-bar>
     <scroll class="content" ref="scroll">
       <detail-swiper :top-images="detailTopImages"></detail-swiper>
       <detail-base-info :goods="goods"></detail-base-info>
       <detail-shop-info :shop="shop"></detail-shop-info>
       <detail-goods-info :detail-info="detailInfo" @image-load="imageLoad"></detail-goods-info>
-      <detail-param-info :param-info="paramInfo"></detail-param-info>
-      <detail-comment-info :comment-info="commentInfo"></detail-comment-info>
-      <goods-list :goods="recommends"></goods-list>
+      <detail-param-info :param-info="paramInfo" ref="params"></detail-param-info>
+      <detail-comment-info :comment-info="commentInfo" ref="comment"></detail-comment-info>
+      <goods-list :goods="recommends" ref="recommend"></goods-list>
     </scroll>
   </div>
 </template>
@@ -54,6 +54,8 @@
         paramInfo: {},
         commentInfo: {},
         recommends: [],
+        themeTopY: [],
+        getThemeTopY: null
       }
     },
     created() {
@@ -76,15 +78,40 @@
         if(data.rate.cRate !== 0) {
           this.commentInfo = data.rate.list[0];
         }
+
+        // this.$nextTick(() => {
+        //   // 根据最新的数据，对应的DOM是已经被渲染出来的
+        //   // 但是图片依然是没有加载完（目前获取到的offsetTop不包含其中的图片）
+        //   this.themeTopY = [];
+        //   this.themeTopY.push(0);
+        //   this.themeTopY.push(this.$refs.params.$el.offsetTop);
+        //   this.themeTopY.push(this.$refs.comment.$el.offsetTop);
+        //   this.themeTopY.push(this.$refs.recommend.$el.offsetTop);
+        //   console.log(this.themeTopY);
+        // })
       });
       // 3.请求推荐数据
       getRecommend().then(res => {
         this.recommends = res.data.list;
       })
+      // 4. 给getThemeTopY赋值(对给this.themeTopY赋值的操作进行防抖)
+      this.getThemeTopY = debounce(() => {
+        this.themeTopY = [];
+        this.themeTopY.push(0);
+        this.themeTopY.push(this.$refs.params.$el.offsetTop);
+        this.themeTopY.push(this.$refs.comment.$el.offsetTop);
+        this.themeTopY.push(this.$refs.recommend.$el.offsetTop);
+        this.themeTopY = this.themeTopY.map((value, index) => index === 0 ? value : value - 44);
+      }, 100)
     },
     methods: {
       imageLoad() {
-        this.$refs.scroll.refresh();
+        // this.$refs.scroll.refresh();
+        this.newRefresh();
+        this.getThemeTopY();
+      },
+      titleClick(index) {
+        this.$refs.scroll.scrollTo(0, -this.themeTopY[index], 200);
       }
     },
     mounted() {
