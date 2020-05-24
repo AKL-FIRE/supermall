@@ -13,7 +13,7 @@
       <detail-comment-info :comment-info="commentInfo" ref="comment"></detail-comment-info>
       <goods-list :goods="recommends" ref="recommend"></goods-list>
     </scroll>
-    <detail-bottom-bar></detail-bottom-bar>
+    <detail-bottom-bar @add-cart="addToCart"></detail-bottom-bar>
     <back-top @click.native="backClick" v-show="isShowBackTop"></back-top>
   </div>
 </template>
@@ -35,7 +35,6 @@
   import {getDetail, getRecommend, Goods, Shop, GoodsParam} from "../../network/detail";
   import {debounce} from "../../common/utils/utils";
   import {itemListenerMixin, backTopMixIn} from "../../common/mixin/mixin";
-  import {BACK_POSITION} from "../../common/const/const";
 
   export default {
     name: "Detail",
@@ -136,6 +135,18 @@
         }
         // 3.backTop组件的显示
         this.listenShowBackTop(pos);
+      },
+      addToCart() {
+        // 1.获取购物车需要展示的信息
+        const product = {}
+        product.image = this.detailTopImages[0];
+        product.title = this.goods.title;
+        product.desc = this.goods.desc;
+        product.price = this.goods.realPrice;
+        product.iid = this.iid;
+        // 2.将商品添加到购物车里
+        console.log(product);
+        this.$store.dispatch('addCart', product);
       }
     },
     mounted() {

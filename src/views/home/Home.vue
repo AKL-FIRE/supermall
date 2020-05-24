@@ -41,7 +41,6 @@
 
   import {getHomeMultidata, getHomeGoods} from "../../network/home";
   import {itemListenerMixin, backTopMixIn} from "../../common/mixin/mixin";
-  import {BACK_POSITION} from "../../common/const/const";
 
   export default {
     name: "Home",
