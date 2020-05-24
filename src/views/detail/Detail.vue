@@ -1,7 +1,10 @@
 <template>
   <div id="detail">
-    <detail-nav-bar class="detail-nav" @title-click="titleClick"></detail-nav-bar>
-    <scroll class="content" ref="scroll">
+    <detail-nav-bar class="detail-nav" @title-click="titleClick" ref="navbar"></detail-nav-bar>
+    <scroll class="content"
+            ref="scroll"
+            @scrolling="contentScroll"
+            :probe-type="3">
       <detail-swiper :top-images="detailTopImages"></detail-swiper>
       <detail-base-info :goods="goods"></detail-base-info>
       <detail-shop-info :shop="shop"></detail-shop-info>
@@ -112,6 +115,20 @@
       },
       titleClick(index) {
         this.$refs.scroll.scrollTo(0, -this.themeTopY[index], 200);
+      },
+      contentScroll(pos) {
+        // 1.获取y值
+        const positionY = -pos.y;
+        // 2.与主题中的值进行对比
+        if(positionY < this.themeTopY[1]) {
+          this.$refs.navbar.currentIndex = 0;
+        } else if(positionY < this.themeTopY[2]) {
+          this.$refs.navbar.currentIndex = 1;
+        } else if(positionY < this.themeTopY[3]) {
+          this.$refs.navbar.currentIndex = 2;
+        } else {
+          this.$refs.navbar.currentIndex = 3;
+        }
       }
     },
     mounted() {
