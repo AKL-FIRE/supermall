@@ -13,6 +13,8 @@
       <detail-comment-info :comment-info="commentInfo" ref="comment"></detail-comment-info>
       <goods-list :goods="recommends" ref="recommend"></goods-list>
     </scroll>
+    <detail-bottom-bar></detail-bottom-bar>
+    <back-top @click.native="backClick" v-show="isShowBackTop"></back-top>
   </div>
 </template>
 
@@ -25,13 +27,15 @@
   import DetailGoodsInfo from "./childComps/DetailGoodsInfo";
   import DetailParamInfo from "./childComps/DetailParamInfo";
   import DetailCommentInfo from "./childComps/DetailCommentInfo";
+  import DetailBottomBar from "./childComps/DetailBottomBar";
 
   import Scroll from "../../components/common/scroll/Scroll";
   import GoodsList from "../../components/content/goods/GoodsList";
 
   import {getDetail, getRecommend, Goods, Shop, GoodsParam} from "../../network/detail";
   import {debounce} from "../../common/utils/utils";
-  import {itemListenerMixin} from "../../common/mixin/mixin";
+  import {itemListenerMixin, backTopMixIn} from "../../common/mixin/mixin";
+  import {BACK_POSITION} from "../../common/const/const";
 
   export default {
     name: "Detail",
@@ -44,9 +48,10 @@
       DetailGoodsInfo,
       DetailParamInfo,
       DetailCommentInfo,
-      GoodsList
+      GoodsList,
+      DetailBottomBar
     },
-    mixins: [itemListenerMixin],
+    mixins: [itemListenerMixin, backTopMixIn],
     data() {
       return {
         iid: "",
@@ -129,10 +134,11 @@
         } else {
           this.$refs.navbar.currentIndex = 3;
         }
+        // 3.backTop组件的显示
+        this.listenShowBackTop(pos);
       }
     },
     mounted() {
-
     },
     destroyed() {
       this.$bus.$off('itemImageLoad', this.itemImageListener);
@@ -154,6 +160,6 @@
     background-color: #fff;
   }
   .content {
-    height: calc(100% - 44px);
+    height: calc(100% - 44px - 49px);
   }
 </style>
