@@ -145,7 +145,6 @@
         product.price = this.goods.realPrice;
         product.iid = this.iid;
         // 2.将商品添加到购物车里
-        console.log(product);
         this.$store.dispatch('addCart', product);
       }
     },
